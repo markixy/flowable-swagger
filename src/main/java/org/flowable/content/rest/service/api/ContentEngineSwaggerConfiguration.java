@@ -1,13 +1,13 @@
 package org.flowable.content.rest.service.api;
 
-import com.markix.flowable.swagger.condition.ContentEngineSwaggerCondition;
+import com.markix.flowable.swagger.Constants;
 import com.markix.flowable.swagger.swagger2.AbstractEngineSwaggerConfiguration;
 import org.flowable.spring.boot.FlowableServlet;
 import org.flowable.spring.boot.RestApiAutoConfiguration;
 import org.flowable.spring.boot.content.ContentEngineRestConfiguration;
 import org.flowable.spring.boot.content.FlowableContentProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Conditional;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @see RestApiAutoConfiguration
  */
 @Configuration(proxyBeanMethods = false)
-@Conditional(ContentEngineSwaggerCondition.class)
+@ConditionalOnProperty(name = Constants.Property.CONTENT, havingValue = Constants.ENABLED)
 public class ContentEngineSwaggerConfiguration extends AbstractEngineSwaggerConfiguration {
 
     @Autowired

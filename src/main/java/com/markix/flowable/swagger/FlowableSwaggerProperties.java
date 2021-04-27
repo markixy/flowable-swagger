@@ -15,10 +15,12 @@ public class FlowableSwaggerProperties {
     private EngineSwagger cmmn = new EngineSwagger();
     private EngineSwagger content = new EngineSwagger();
     private EngineSwagger dmn = new EngineSwagger();
-    private EngineSwagger eventRegistry = new EngineSwagger();
     private EngineSwagger form = new EngineSwagger();
     private EngineSwagger idm = new EngineSwagger();
+
+    private EngineSwagger eventRegistry = new EngineSwagger();
     private EngineSwagger externalJob = new EngineSwagger();
+
 
     public boolean isEnabled() {
         return enabled;

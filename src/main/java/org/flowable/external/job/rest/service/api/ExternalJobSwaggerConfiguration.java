@@ -1,12 +1,11 @@
 package org.flowable.external.job.rest.service.api;
 
 import com.markix.flowable.swagger.Constants;
-import com.markix.flowable.swagger.condition.ExternalJobSwaggerCondition;
 import com.markix.flowable.swagger.swagger2.AbstractEngineSwaggerConfiguration;
 import org.flowable.spring.boot.FlowableServlet;
 import org.flowable.spring.boot.RestApiAutoConfiguration;
 import org.flowable.spring.boot.job.ExternalJobRestConfiguration;
-import org.springframework.context.annotation.Conditional;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -15,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * @see RestApiAutoConfiguration
  */
 @Configuration(proxyBeanMethods = false)
-@Conditional(ExternalJobSwaggerCondition.class)
+@ConditionalOnProperty(name = Constants.Property.EXTERNAL_JOB, havingValue = Constants.ENABLED)
 public class ExternalJobSwaggerConfiguration extends AbstractEngineSwaggerConfiguration {
 
 
