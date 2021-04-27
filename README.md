@@ -27,6 +27,7 @@ flowable:
     app.enabled: true
     form.enabled: true
     dmn.enabled: true
+    external-job.enabled: true
 ```
 
 # 使用

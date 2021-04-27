@@ -1,5 +1,6 @@
 package com.markix.flowable.swagger.swagger2;
 
+import com.markix.flowable.swagger.Constants;
 import com.markix.flowable.swagger.FlowableSwaggerProperties;
 import org.flowable.spring.boot.FlowableServlet;
 import org.flowable.spring.boot.RestApiAutoConfiguration;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
+import org.springframework.util.ClassUtils;
 import springfox.documentation.spring.web.DocumentationCache;
 import springfox.documentation.swagger.web.InMemorySwaggerResourcesProvider;
 import springfox.documentation.swagger.web.SwaggerResource;
@@ -74,16 +76,19 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
         Optional.ofNullable(flowableEventRegistryProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getEventRegistry(), resources, RestApiAutoConfiguration.EventRegistryRestApiConfiguration.class, prop.getServlet()));
         Optional.ofNullable(flowableFormProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getForm(), resources, RestApiAutoConfiguration.FormEngineRestApiConfiguration.class, prop.getServlet()));
         Optional.ofNullable(flowableIdmProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getIdm(), resources, RestApiAutoConfiguration.IdmEngineRestApiConfiguration.class, prop.getServlet()));
+
+        addFlowable66AdditionalResource(resources);
+    }
+
+    private void addFlowable66AdditionalResource(List<SwaggerResource> resources) {
+        boolean flag = ClassUtils.isPresent("org.flowable.spring.boot.RestApiAutoConfiguration.ExternalJobRestApiConfiguration", ClassUtils.getDefaultClassLoader());
+        if(flag){
+            Optional.ofNullable(flowableProcessProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getExternalJob(), resources, RestApiAutoConfiguration.ExternalJobRestApiConfiguration.class, Constants.EXTERNAL_JOB));
+        }
     }
 
     private void addFlowableResource(FlowableSwaggerProperties.EngineSwagger engineSwagger, List<SwaggerResource> resources, Class<? extends BaseRestApiConfiguration> configurationClass, FlowableServlet servlet) {
         if (engineSwagger.isEnabled() && applicationContext.containsBean(configurationClass.getName())) {
-            resources.add(buildSwaggerResource(servlet.getName(), servlet.getPath() + swagger2Url));
-        }
-    }
-
-    private void addFlowableResource(List<SwaggerResource> resources, Class<? extends BaseRestApiConfiguration> configurationClass, FlowableServlet servlet) {
-        if (applicationContext.containsBean(configurationClass.getName())) {
             resources.add(buildSwaggerResource(servlet.getName(), servlet.getPath() + swagger2Url));
         }
     }

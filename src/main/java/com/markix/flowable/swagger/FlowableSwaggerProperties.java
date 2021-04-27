@@ -18,6 +18,7 @@ public class FlowableSwaggerProperties {
     private EngineSwagger eventRegistry = new EngineSwagger();
     private EngineSwagger form = new EngineSwagger();
     private EngineSwagger idm = new EngineSwagger();
+    private EngineSwagger externalJob = new EngineSwagger();
 
     public boolean isEnabled() {
         return enabled;
@@ -89,6 +90,14 @@ public class FlowableSwaggerProperties {
 
     public void setIdm(EngineSwagger idm) {
         this.idm = idm;
+    }
+
+    public EngineSwagger getExternalJob() {
+        return externalJob;
+    }
+
+    public void setExternalJob(EngineSwagger externalJob) {
+        this.externalJob = externalJob;
     }
 
     public static class EngineSwagger {

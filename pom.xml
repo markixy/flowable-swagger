@@ -38,14 +38,14 @@
 
         <version.java>1.8</version.java>
         <version.spring-boot>2.2.2.RELEASE</version.spring-boot>
-        <version.flowable>6.5.0</version.flowable>
+        <version.flowable>6.6.0</version.flowable>
         <version.swagger>2.9.2</version.swagger>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
