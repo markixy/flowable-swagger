@@ -6,7 +6,7 @@
 
     <groupId>io.github.markixy</groupId>
     <artifactId>flowable-swagger</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>flowable-swagger</name>
     <description>实现了 Flowable 整合 Swagger 的自动化配置项目</description>
