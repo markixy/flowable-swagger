@@ -8,8 +8,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import springfox.documentation.spring.web.DocumentationCache;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
@@ -18,16 +16,18 @@ import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfi
 /**
  * @author markix
  */
-@Order(value = Ordered.LOWEST_PRECEDENCE)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication
-@ConditionalOnBean({
-        BaseRestApiConfiguration.class,
-        Swagger2DocumentationConfiguration.class
-})
 @ConditionalOnProperty(prefix = "flowable.swagger", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class FlowableSwagger2Configuration {
 
+    /**
+     * 主应用上下文开启了Swagger，且存在flowable rest模块
+     */
+    @ConditionalOnBean({
+            Swagger2DocumentationConfiguration.class,
+            BaseRestApiConfiguration.class
+    })
     @Primary
     @Bean
     public SwaggerResourcesProvider delegateSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, FlowableSwaggerProperties properties) {
