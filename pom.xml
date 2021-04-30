@@ -50,6 +50,31 @@
             <version>${version.flowable}</version>
             <optional>true</optional>
         </dependency>
+        <!-- flowable ui -->
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-ui-idm</artifactId>
+            <version>${version.flowable}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-ui-modeler</artifactId>
+            <version>${version.flowable}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-ui-admin</artifactId>
+            <version>${version.flowable}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-ui-task</artifactId>
+            <version>${version.flowable}</version>
+            <optional>true</optional>
+        </dependency>
 
         <!-- spring boot -->
         <dependency>

@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    com.markix.flowable.swagger.boot.FlowableSwaggerAutoConfiguration
+    com.markix.flowable.swagger.boot.FlowableSwaggerAutoConfiguration,\
+    com.markix.flowable.swagger.ui.boot.FlowableUiSwaggerAutoConfiguration

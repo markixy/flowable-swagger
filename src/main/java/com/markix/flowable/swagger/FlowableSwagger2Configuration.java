@@ -1,6 +1,7 @@
 package com.markix.flowable.swagger;
 
 import com.markix.flowable.swagger.swagger2.FlowableSwaggerResourcesProvider;
+import com.markix.flowable.swagger.ui.FlowableUiSwaggerProperties;
 import org.flowable.spring.boot.rest.BaseRestApiConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,8 +31,9 @@ public class FlowableSwagger2Configuration {
     })
     @Primary
     @Bean
-    public SwaggerResourcesProvider delegateSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, FlowableSwaggerProperties properties) {
-        return new FlowableSwaggerResourcesProvider(environment, documentationCache, properties);
+    public SwaggerResourcesProvider delegateSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache,
+                                                                     FlowableSwaggerProperties properties, FlowableUiSwaggerProperties uiProps) {
+        return new FlowableSwaggerResourcesProvider(environment, documentationCache, properties, uiProps);
     }
 
 }

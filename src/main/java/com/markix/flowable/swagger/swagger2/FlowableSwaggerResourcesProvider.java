@@ -2,6 +2,7 @@ package com.markix.flowable.swagger.swagger2;
 
 import com.markix.flowable.swagger.Constants;
 import com.markix.flowable.swagger.FlowableSwaggerProperties;
+import com.markix.flowable.swagger.ui.FlowableUiSwaggerProperties;
 import org.flowable.spring.boot.FlowableServlet;
 import org.flowable.spring.boot.RestApiAutoConfiguration;
 import org.flowable.spring.boot.app.FlowableAppProperties;
@@ -38,6 +39,7 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
     private final String swagger2Url;
     private ApplicationContext applicationContext;
     private FlowableSwaggerProperties swaggerProperties;
+    private FlowableUiSwaggerProperties uiSwaggerProperties;
 
     @Autowired(required = false)
     private FlowableProcessProperties flowableProcessProperties;
@@ -56,17 +58,21 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
     @Autowired(required = false)
     private FlowableCmmnProperties flowableCmmnProperties;
 
-    public FlowableSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, FlowableSwaggerProperties swaggerProperties) {
+    public FlowableSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache,
+                                            FlowableSwaggerProperties swaggerProperties, FlowableUiSwaggerProperties uiSwaggerProperties) {
         super(environment, documentationCache);
         this.swagger2Url = environment.getProperty("springfox.documentation.swagger.v2.path", Swagger2Controller.DEFAULT_URL);
         this.swaggerProperties = swaggerProperties;
+        this.uiSwaggerProperties = uiSwaggerProperties;
         addFlowableEngineSwaggerSwitchProperties((ConfigurableEnvironment) environment, swaggerProperties);
+        addFlowableUiAppSwaggerSwitchProperties((ConfigurableEnvironment) environment, uiSwaggerProperties);
     }
 
     @Override
     public List<SwaggerResource> get() {
         List<SwaggerResource> resources = super.get();
         addFlowableResources(resources);
+        addFlowableUiResource(resources);
         return resources;
     }
 
@@ -86,6 +92,18 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
         environment.getPropertySources().addLast(new PropertiesPropertySource(Constants.Property.NAME, properties));
     }
 
+
+    private void addFlowableUiAppSwaggerSwitchProperties(ConfigurableEnvironment environment, FlowableUiSwaggerProperties uiSwaggerProperties){
+        //添加属性，flowable ui各个模块根据属性值判断是否开启Swagger
+        Properties properties = new Properties();
+        properties.put(Constants.UiProperty.ADMIN_APP, uiSwaggerProperties.getAdmin().isEnabled());
+        properties.put(Constants.UiProperty.IDM_APP, uiSwaggerProperties.getIdm().isEnabled());
+        properties.put(Constants.UiProperty.IDM_APP_API, uiSwaggerProperties.getIdmApi().isEnabled());
+        properties.put(Constants.UiProperty.MODELER_APP, uiSwaggerProperties.getModeler().isEnabled());
+        properties.put(Constants.UiProperty.MODELER_APP_API, uiSwaggerProperties.getModelerApi().isEnabled());
+        environment.getPropertySources().addLast(new PropertiesPropertySource(Constants.UiProperty.NAME, properties));
+    }
+
     private void addFlowableResources(List<SwaggerResource> resources) {
         Optional.ofNullable(flowableProcessProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getProcess(), resources, RestApiAutoConfiguration.ProcessEngineRestApiConfiguration.class, prop.getServlet()));
         Optional.ofNullable(flowableAppProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getApp(), resources, RestApiAutoConfiguration.AppEngineRestApiConfiguration.class, prop.getServlet()));
@@ -95,19 +113,37 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
         Optional.ofNullable(flowableFormProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getForm(), resources, RestApiAutoConfiguration.FormEngineRestApiConfiguration.class, prop.getServlet()));
         Optional.ofNullable(flowableIdmProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getIdm(), resources, RestApiAutoConfiguration.IdmEngineRestApiConfiguration.class, prop.getServlet()));
         Optional.ofNullable(flowableEventRegistryProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getEventRegistry(), resources, RestApiAutoConfiguration.EventRegistryRestApiConfiguration.class, prop.getServlet()));
-
-        addFlowable66AdditionalResource(resources);
-    }
-
-    private void addFlowable66AdditionalResource(List<SwaggerResource> resources) {
-        boolean flag = ClassUtils.isPresent("org.flowable.spring.boot.RestApiAutoConfiguration.ExternalJobRestApiConfiguration", ClassUtils.getDefaultClassLoader());
-        if(flag){
+        //兼容flowable6.6的ExternalJob模块
+        if(ClassUtils.isPresent("org.flowable.spring.boot.RestApiAutoConfiguration.ExternalJobRestApiConfiguration", getClass().getClassLoader())){
             Optional.ofNullable(flowableProcessProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getExternalJob(), resources, RestApiAutoConfiguration.ExternalJobRestApiConfiguration.class, Constants.EXTERNAL_JOB));
         }
     }
 
+    private void addFlowableUiResource(List<SwaggerResource> resources) {
+        if(!uiSwaggerProperties.isEnabled()) {
+            return;
+        }
+        if(ClassUtils.isPresent("org.flowable.ui.admin.conf.ApplicationConfiguration", getClass().getClassLoader())){
+            addFlowableResource(uiSwaggerProperties.getAdmin(), resources, Constants.ADMIN_APP);
+        }
+        if(ClassUtils.isPresent("org.flowable.ui.modeler.conf.ApplicationConfiguration", getClass().getClassLoader())){
+            addFlowableResource(uiSwaggerProperties.getIdm(), resources, Constants.IDM_APP);
+            addFlowableResource(uiSwaggerProperties.getIdmApi(), resources, Constants.IDM_APP_API);
+        }
+        if(ClassUtils.isPresent("org.flowable.ui.modeler.conf.ApplicationConfiguration", getClass().getClassLoader())){
+            addFlowableResource(uiSwaggerProperties.getModeler(), resources, Constants.MODELER_APP);
+            addFlowableResource(uiSwaggerProperties.getModelerApi(), resources, Constants.MODELER_APP_API);
+        }
+    }
+
+
     private void addFlowableResource(FlowableSwaggerProperties.EngineSwagger engineSwagger, List<SwaggerResource> resources, Class<? extends BaseRestApiConfiguration> configurationClass, FlowableServlet servlet) {
         if (engineSwagger.isEnabled() && applicationContext.containsBean(configurationClass.getName())) {
+            resources.add(buildSwaggerResource(servlet.getName(), servlet.getPath() + swagger2Url));
+        }
+    }
+    private void addFlowableResource(FlowableUiSwaggerProperties.AppSwagger swagger, List<SwaggerResource> resources, FlowableServlet servlet) {
+        if (swagger.isEnabled()) {
             resources.add(buildSwaggerResource(servlet.getName(), servlet.getPath() + swagger2Url));
         }
     }
