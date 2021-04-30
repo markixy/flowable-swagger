@@ -28,6 +28,16 @@ flowable:
     dmn.enabled: true
     event-registry.enabled: true
     external-job.enabled: true
+
+flowable-ui:
+  swagger:
+    enabled: true #是否启用 Flowable UI 的 Swagger
+    # 细粒度控制各App的Swagger启用状态
+    admin.enabled: true
+    idm.enabled: true
+    idm-api.enabled: true
+    modeler.enabled: true
+    modeler-api.enabled: true
 ```
 
 # 使用
@@ -36,7 +46,10 @@ flowable:
 <dependency>
     <groupId>io.github.markixy</groupId>
     <artifactId>flowable-swagger</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 若重新打包则会更新到依赖版本，最新版本详见 [https://search.maven.org/artifact/io.github.markixy/flowable-swagger](https://search.maven.org/artifact/io.github.markixy/flowable-swagger)
+
+# 更新历史
+见 [change-log.md](change-log.md)

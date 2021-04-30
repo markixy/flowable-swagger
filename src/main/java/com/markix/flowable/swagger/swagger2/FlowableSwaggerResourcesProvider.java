@@ -18,9 +18,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.ClassUtils;
 import springfox.documentation.spring.web.DocumentationCache;
 import springfox.documentation.swagger.web.InMemorySwaggerResourcesProvider;
@@ -29,7 +27,6 @@ import springfox.documentation.swagger2.web.Swagger2Controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 /**
  * @author markix
@@ -38,7 +35,10 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
 
     private final String swagger2Url;
     private ApplicationContext applicationContext;
+
+    @Autowired
     private FlowableSwaggerProperties swaggerProperties;
+    @Autowired
     private FlowableUiSwaggerProperties uiSwaggerProperties;
 
     @Autowired(required = false)
@@ -58,14 +58,10 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
     @Autowired(required = false)
     private FlowableCmmnProperties flowableCmmnProperties;
 
-    public FlowableSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache,
-                                            FlowableSwaggerProperties swaggerProperties, FlowableUiSwaggerProperties uiSwaggerProperties) {
+
+    public FlowableSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache) {
         super(environment, documentationCache);
         this.swagger2Url = environment.getProperty("springfox.documentation.swagger.v2.path", Swagger2Controller.DEFAULT_URL);
-        this.swaggerProperties = swaggerProperties;
-        this.uiSwaggerProperties = uiSwaggerProperties;
-        addFlowableEngineSwaggerSwitchProperties((ConfigurableEnvironment) environment, swaggerProperties);
-        addFlowableUiAppSwaggerSwitchProperties((ConfigurableEnvironment) environment, uiSwaggerProperties);
     }
 
     @Override
@@ -76,35 +72,10 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
         return resources;
     }
 
-
-    private void addFlowableEngineSwaggerSwitchProperties(ConfigurableEnvironment environment, FlowableSwaggerProperties swaggerProperties){
-        //添加属性，flowable各个模块根据属性值判断是否开启Swagger
-        Properties properties = new Properties();
-        properties.put(Constants.Property.PROCESS, swaggerProperties.getProcess().isEnabled());
-        properties.put(Constants.Property.APP, swaggerProperties.getApp().isEnabled());
-        properties.put(Constants.Property.CMMN, swaggerProperties.getCmmn().isEnabled());
-        properties.put(Constants.Property.CONTENT, swaggerProperties.getContent().isEnabled());
-        properties.put(Constants.Property.DMN, swaggerProperties.getDmn().isEnabled());
-        properties.put(Constants.Property.FORM, swaggerProperties.getForm().isEnabled());
-        properties.put(Constants.Property.IDM, swaggerProperties.getIdm().isEnabled());
-        properties.put(Constants.Property.EVENT_REGISTRY, swaggerProperties.getEventRegistry().isEnabled());
-        properties.put(Constants.Property.EXTERNAL_JOB, swaggerProperties.getExternalJob().isEnabled());
-        environment.getPropertySources().addLast(new PropertiesPropertySource(Constants.Property.NAME, properties));
-    }
-
-
-    private void addFlowableUiAppSwaggerSwitchProperties(ConfigurableEnvironment environment, FlowableUiSwaggerProperties uiSwaggerProperties){
-        //添加属性，flowable ui各个模块根据属性值判断是否开启Swagger
-        Properties properties = new Properties();
-        properties.put(Constants.UiProperty.ADMIN_APP, uiSwaggerProperties.getAdmin().isEnabled());
-        properties.put(Constants.UiProperty.IDM_APP, uiSwaggerProperties.getIdm().isEnabled());
-        properties.put(Constants.UiProperty.IDM_APP_API, uiSwaggerProperties.getIdmApi().isEnabled());
-        properties.put(Constants.UiProperty.MODELER_APP, uiSwaggerProperties.getModeler().isEnabled());
-        properties.put(Constants.UiProperty.MODELER_APP_API, uiSwaggerProperties.getModelerApi().isEnabled());
-        environment.getPropertySources().addLast(new PropertiesPropertySource(Constants.UiProperty.NAME, properties));
-    }
-
     private void addFlowableResources(List<SwaggerResource> resources) {
+        if(!swaggerProperties.isEnabled()){
+            return;
+        }
         Optional.ofNullable(flowableProcessProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getProcess(), resources, RestApiAutoConfiguration.ProcessEngineRestApiConfiguration.class, prop.getServlet()));
         Optional.ofNullable(flowableAppProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getApp(), resources, RestApiAutoConfiguration.AppEngineRestApiConfiguration.class, prop.getServlet()));
         Optional.ofNullable(flowableCmmnProperties).ifPresent(prop -> addFlowableResource(swaggerProperties.getCmmn(), resources, RestApiAutoConfiguration.CmmnEngineRestApiConfiguration.class, prop.getServlet()));
