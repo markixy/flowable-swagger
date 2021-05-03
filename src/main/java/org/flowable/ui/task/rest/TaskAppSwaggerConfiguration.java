@@ -1,7 +1,7 @@
 package org.flowable.ui.task.rest;
 
 import com.google.common.base.Predicates;
-import com.markix.flowable.swagger.Constants;
+import io.github.markixy.flowable.Constants;
 import org.flowable.spring.boot.FlowableServlet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,8 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @see org.flowable.ui.task.servlet.AppDispatcherServletConfiguration
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = Constants.UiProperty.TASK_APP, havingValue = Constants.ENABLED, matchIfMissing = true)
+@ConditionalOnProperty(name = {Constants.UiProperty.ENABLED, Constants.UiProperty.TASK_APP},
+        havingValue = Constants.ENABLED, matchIfMissing = true)
 public class TaskAppSwaggerConfiguration {
 
     @Bean

@@ -1,4 +1,4 @@
-package com.markix.flowable.swagger.ui;
+package io.github.markixy.flowable.ui;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

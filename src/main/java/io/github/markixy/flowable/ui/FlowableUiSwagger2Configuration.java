@@ -1,6 +1,6 @@
-package com.markix.flowable.swagger.ui;
+package io.github.markixy.flowable.ui;
 
-import com.markix.flowable.swagger.Constants;
+import io.github.markixy.flowable.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

@@ -1,8 +1,8 @@
-package com.markix.flowable.swagger.swagger2;
+package io.github.markixy.flowable.swagger2;
 
-import com.markix.flowable.swagger.Constants;
-import com.markix.flowable.swagger.FlowableSwaggerProperties;
-import com.markix.flowable.swagger.ui.FlowableUiSwaggerProperties;
+import io.github.markixy.flowable.Constants;
+import io.github.markixy.flowable.FlowableSwaggerProperties;
+import io.github.markixy.flowable.ui.FlowableUiSwaggerProperties;
 import org.flowable.spring.boot.FlowableServlet;
 import org.flowable.spring.boot.RestApiAutoConfiguration;
 import org.flowable.spring.boot.app.FlowableAppProperties;

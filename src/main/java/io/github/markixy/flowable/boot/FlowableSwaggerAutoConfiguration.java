@@ -1,7 +1,7 @@
-package com.markix.flowable.swagger.boot;
+package io.github.markixy.flowable.boot;
 
-import com.markix.flowable.swagger.FlowableSwagger2Configuration;
-import com.markix.flowable.swagger.FlowableSwaggerProperties;
+import io.github.markixy.flowable.FlowableSwagger2Configuration;
+import io.github.markixy.flowable.FlowableSwaggerProperties;
 import org.flowable.spring.boot.RestApiAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

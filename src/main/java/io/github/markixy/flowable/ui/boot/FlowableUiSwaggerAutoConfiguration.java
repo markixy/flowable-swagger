@@ -1,8 +1,8 @@
-package com.markix.flowable.swagger.ui.boot;
+package io.github.markixy.flowable.ui.boot;
 
-import com.markix.flowable.swagger.boot.FlowableSwaggerAutoConfiguration;
-import com.markix.flowable.swagger.ui.FlowableUiSwagger2Configuration;
-import com.markix.flowable.swagger.ui.FlowableUiSwaggerProperties;
+import io.github.markixy.flowable.boot.FlowableSwaggerAutoConfiguration;
+import io.github.markixy.flowable.ui.FlowableUiSwagger2Configuration;
+import io.github.markixy.flowable.ui.FlowableUiSwaggerProperties;
 import org.flowable.spring.boot.RestApiAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;

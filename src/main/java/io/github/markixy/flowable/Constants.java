@@ -1,4 +1,4 @@
-package com.markix.flowable.swagger;
+package io.github.markixy.flowable;
 
 import org.flowable.spring.boot.FlowableServlet;
 
@@ -39,7 +39,7 @@ public interface Constants {
 
     interface UiProperty {
         String NAME = "flowableUiModuleSwaggerSwitchProperties";
-
+        String ENABLED = "flowable-ui.swagger.enabled";
         String ADMIN_APP = "flowable-ui.swagger.admin.enabled";
         String IDM_APP = "flowable-ui.swagger.idm.enabled";
         String IDM_APP_API = "flowable-ui.swagger.idm-api.enabled";

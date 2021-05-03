@@ -1,4 +1,4 @@
-package com.markix.flowable.swagger.swagger2;
+package io.github.markixy.flowable.swagger2;
 
 import org.flowable.spring.boot.FlowableServlet;
 import org.springframework.context.annotation.Bean;

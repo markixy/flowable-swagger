@@ -1,7 +1,7 @@
 package org.flowable.cmmn.rest.service.api;
 
-import com.markix.flowable.swagger.Constants;
-import com.markix.flowable.swagger.swagger2.AbstractEngineSwaggerConfiguration;
+import io.github.markixy.flowable.Constants;
+import io.github.markixy.flowable.swagger2.AbstractEngineSwaggerConfiguration;
 import org.flowable.spring.boot.FlowableServlet;
 import org.flowable.spring.boot.cmmn.FlowableCmmnProperties;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.markix.flowable.swagger;
+package io.github.markixy.flowable;
 
-import com.markix.flowable.swagger.swagger2.FlowableSwaggerResourcesProvider;
+import io.github.markixy.flowable.swagger2.FlowableSwaggerResourcesProvider;
 import org.flowable.spring.boot.rest.BaseRestApiConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

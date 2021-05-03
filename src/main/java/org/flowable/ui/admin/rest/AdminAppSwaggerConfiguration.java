@@ -1,7 +1,7 @@
 package org.flowable.ui.admin.rest;
 
-import com.markix.flowable.swagger.Constants;
-import com.markix.flowable.swagger.swagger2.AbstractEngineSwaggerConfiguration;
+import io.github.markixy.flowable.Constants;
+import io.github.markixy.flowable.swagger2.AbstractEngineSwaggerConfiguration;
 import org.flowable.spring.boot.FlowableServlet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
