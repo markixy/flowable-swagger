@@ -97,7 +97,7 @@ public class FlowableSwaggerResourcesProvider extends InMemorySwaggerResourcesPr
         if(ClassUtils.isPresent("org.flowable.ui.admin.conf.ApplicationConfiguration", getClass().getClassLoader())){
             addFlowableResource(uiSwaggerProperties.getAdmin(), resources, Constants.ADMIN_APP);
         }
-        if(ClassUtils.isPresent("org.flowable.ui.modeler.conf.ApplicationConfiguration", getClass().getClassLoader())){
+        if(ClassUtils.isPresent("org.flowable.ui.idm.conf.ApplicationConfiguration", getClass().getClassLoader())){
             addFlowableResource(uiSwaggerProperties.getIdm(), resources, Constants.IDM_APP);
             addFlowableResource(uiSwaggerProperties.getIdmApi(), resources, Constants.IDM_APP_API);
         }
